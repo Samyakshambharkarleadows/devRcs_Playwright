@@ -1,0 +1,46 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches:
+      - test   # ✅ Runs only when you push to the 'test' branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Make sure the Ubuntu runner is up-to-date and git works properly
+      - name: Update system and install Git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git --fix-missing
+
+      # 2️⃣ Checkout your repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 3️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 4️⃣ Install all dependencies + Playwright browsers
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      # 5️⃣ Run your Playwright tests
+      - name: Run Playwright tests
+        run: |
+          npx playwright test --reporter=line
+
+      # 6️⃣ Upload test report (optional but useful)
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
