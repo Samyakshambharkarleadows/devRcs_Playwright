@@ -4,6 +4,8 @@ const { waitForDebugger } = require('inspector')
 const { postMessageToThread } = require('worker_threads')
 
 test('Launch Application', async({page}) => {
+    test.setTimeout(0); // disables test timeout (never stops)
+
     await page.goto('https://devrcs.pinnacle.in/auth/login')
 
     await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")
@@ -64,6 +66,7 @@ test('Launch Application', async({page}) => {
       ]);
     await logoChooser.setFiles('assets/logo.png');
     await page.locator('.ReactCrop__crop-selection[role="group"]').click();
+    await page.waitForTimeout(5000); // waits for 5 seconds (5000 milliseconds)
     await page.locator('button', { hasText: 'Select' }).click();
 
     // Documents Uplaod
@@ -72,11 +75,6 @@ test('Launch Application', async({page}) => {
     await page.locator('li[data-value="PAN card of Company"]').click();
     const panInput = await page.locator('input[type="file"]').nth(1);
     await panInput.setInputFiles('assets/pan.pdf');
-    // const [panChooser] = await Promise.all([
-    //    page.waitForEvent('filechooser'),
-    //    page.getByRole('button', { name: 'Choose' }).nth(0).click(),
-    //   ]);
-    // await panChooser.setFiles('assets/pan.pdf');
 
     await page.getByRole('combobox', { name: 'Select Document Type' }).nth(1).click();
     await page.waitForSelector('li[data-value="GST document"]', { state: 'visible' });
@@ -89,6 +87,5 @@ test('Launch Application', async({page}) => {
     await page.getByText('Add Client').click();
     await page.waitForTimeout(5000);
     await page.screenshot({ path: 'screenshots/success_upload.png', fullPage: true });
-
 
 });
