@@ -10,34 +10,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Make sure the Ubuntu runner is up-to-date and git works properly
+      # Make sure the Ubuntu runner is up-to-date and git works properly
       - name: Update system and install Git
         run: |
           sudo apt-get update
           sudo apt-get install -y git --fix-missing
 
-      # 2️⃣ Checkout your repository code
+      # Checkout your repository code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 3️⃣ Setup Node.js
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 4️⃣ Install all dependencies + Playwright browsers
+      # Install all dependencies + Playwright browsers
       - name: Install dependencies
         run: |
           npm ci
           npx playwright install --with-deps
 
-      # 5️⃣ Run your Playwright tests
+      # Run your Playwright tests
       - name: Run Playwright tests
         run: |
-          npx playwright test --reporter=line
+          npx playwright test specs/addclient.spec.js --reporter=line --video=on
 
-      # 6️⃣ Upload test report (optional but useful)
+      # Upload test report (optional but useful)
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
