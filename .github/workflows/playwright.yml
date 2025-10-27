@@ -3,7 +3,7 @@ name: Playwright Tests
 on:
   push:
     branches:
-      - test   # ✅ Runs only when you push to the 'test' branch
+      - test   # Runs only when you push to the 'test' branch
 
 jobs:
   test:
@@ -35,7 +35,7 @@ jobs:
       # Run your Playwright tests
       - name: Run Playwright tests
         run: |
-          npx playwright test specs/addclient.spec.js --reporter=line --video=on
+          npx playwright test specs/addclient.spec.js --reporter=html
 
       # Upload test report (optional but useful)
       - name: Upload test results
