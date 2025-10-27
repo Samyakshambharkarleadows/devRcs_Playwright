@@ -10,12 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Make sure the Ubuntu runner is up-to-date and git works properly
-      - name: Update system and install Git
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git --fix-missing
-
       # Checkout your repository code
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,13 +26,16 @@ jobs:
           npm ci
           npx playwright install --with-deps
 
-      # Run your Playwright tests
-      - name: Run Playwright tests
+      # Run Playwright tests (Headless mode)
+      - name: Run Playwright tests (Headless)
         run: |
           npx playwright test tests --reporter=html
+        env:
+          CI: true
+          HEADLESS: true
 
-      # Upload test report (optional but useful)
-      - name: Upload test results
+      # Upload test report (HTML)
+      - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
