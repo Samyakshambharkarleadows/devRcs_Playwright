@@ -6,7 +6,9 @@ const { postMessageToThread } = require('worker_threads')
 test('Launch Application', async({page}) => {
     await page.goto('https://devrcs.pinnacle.in/auth/login')
 
-    await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")     // Its Correct 
+    // await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")     // Its Correct 
+    
+    await page.getByRole('textbox', { name: 'Username'}).fill("admin@pinnacle.in")
     await page.locator("css=#outlined-adornment-password").fill("1234567890")
     await page.getByRole('button', {name: 'Sign in'}).click();
     await page.getByText('Clients').click();
