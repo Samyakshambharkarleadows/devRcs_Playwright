@@ -66,7 +66,7 @@ test('Launch Application', async({page}) => {
       ]);
     await logoChooser.setFiles('assets/logo.png');
     await page.locator('.ReactCrop__crop-selection[role="group"]').click();
-    await page.waitForTimeout(5000); // waits for 5 seconds (5000 milliseconds)
+    await page.waitForTimeout(3000); // waits for 3 seconds (3000 milliseconds)
     await page.locator('button', { hasText: 'Select' }).click();
 
     // Documents Uplaod
