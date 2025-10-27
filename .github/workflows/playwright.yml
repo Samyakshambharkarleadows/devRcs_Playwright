@@ -35,7 +35,7 @@ jobs:
       # Run your Playwright tests
       - name: Run Playwright tests
         run: |
-          npx playwright test specs/addclient.spec.js --reporter=html
+          npx playwright test tests --reporter=html
 
       # Upload test report (optional but useful)
       - name: Upload test results
