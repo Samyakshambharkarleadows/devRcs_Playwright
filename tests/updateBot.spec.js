@@ -17,7 +17,9 @@ test('Launch Application', async ({ page }) => {
 
 
   // Click on Three dots for updating
-  await page.locator("xpath=//*[@id='menu-button@690c59a2f9f90403e241c5bf']").click();
+  // await page.locator("xpath=//*[@id='menu-button@690c59a2f9f90403e241c5bf']").click();
+  // await page.getByTestId("MoreVertIcon").click();
+  await page.getByTestId('MoreVertIcon').nth(0).click(); // first
   await page.getByTitle('Edit Details').click();
   await page.waitForTimeout(2000);
 
