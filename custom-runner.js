@@ -1,4 +1,5 @@
-import { execSync } from 'child_process';
+// import { execSync } from 'child_process';
+const { execSync } = require('child_process');
 
 const testsInOrder = [
   'tests/addclient.spec.js',
