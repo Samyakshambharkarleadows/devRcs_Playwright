@@ -1,6 +1,6 @@
 # Playwright Automation Test – Client Creation Flow // run
 
-## 🚀 How to Run This Test
+## How to Run This Test
 
 ### 1️⃣ Clone the repository
 

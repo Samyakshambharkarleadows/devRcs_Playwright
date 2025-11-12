@@ -13,7 +13,6 @@ test('Launch Application', async ({ page }) => {
         throw error;
     }
 
-
     // Login into devrcs.pinnacle.in using admin Credentils.
     await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")
     await page.locator("css=#outlined-adornment-password").fill("1234567890")
