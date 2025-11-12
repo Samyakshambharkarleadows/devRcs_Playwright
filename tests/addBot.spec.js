@@ -5,7 +5,7 @@ const { postMessageToThread } = require('worker_threads')
 
 test('Launch Application', async ({ page }) => {
 
-  await page.goto('https://devrcs.pinnacle.in/auth/login')
+  await page.goto('https://qarcs.pinlab.in/auth/login')
 
   await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")
   await page.locator("css=#outlined-adornment-password").fill("1234567890")
