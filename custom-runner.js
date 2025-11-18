@@ -7,6 +7,11 @@ const testsInOrder = [
   'tests/updateRates.spec.js',
   'tests/addBot.spec.js',
   'tests/updateBot.spec.js',
+  'tests/verifyBot.spec.js',
+  'tests/changeBotStatus.spec.js',
+  'tests/addTextTemplate.spec.js',
+  'tests/addStandAloneTemplate.spec.js',
+  'tests/addCarouselTemplate.spec.js',
 ];
 
 for (const testFile of testsInOrder) {

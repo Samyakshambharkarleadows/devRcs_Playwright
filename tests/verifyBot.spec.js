@@ -15,31 +15,26 @@ test('Launch Application', async ({ page }) => {
   await page.getByRole('button', { name: 'RCS Management' }).click();
   await page.getByRole('link', { name: 'Bots' }).click();
 
-
   // Click on Three dots for updating
-  // await page.locator("xpath=//*[@id='menu-button@690c59a2f9f90403e241c5bf']").click(); //----Not working 
-  // await page.getByTestId("MoreVertIcon").click();
   await page.getByTestId('MoreVertIcon').nth(0).click(); // first
-  await page.getByTitle('Edit Details').click();
+  await page.getByRole('menuitem', { name: 'Verify Client Secret' }).click();
   await page.waitForTimeout(2000);
 
   // Now take a current timestamp for uniqueness.
   const timestamp = Date.now();
 
   // Now filling form of Add New BOT == IDEAL PASSING CASES 
-  const uniqueClientName = `SamyakQA_${timestamp}_UPD`;
+  const uniqueKey = `TEST${timestamp}`;
 
-  // Bot Name
-  await page.locator('[name="botName"]').fill(uniqueClientName);
+  // Client ID
+  await page.locator('[name="rbmClientId"]').fill(uniqueKey);
+  await page.locator('[name="rbmClientSecret"]').fill(uniqueKey);
 
-  // // Click on Checkbox
-  await page.waitForTimeout(2000);
-
-  // // Submit the Form
-  await page.locator('button', { hasText: 'Update' }).click();
+  // Submit the Form
+  await page.locator('button', { hasText: 'Save' }).click();
 
   // Take screenshot
-  await page.waitForTimeout(9000);
+  await page.waitForTimeout(4000);
   await page.screenshot({ path: 'screenshots/success_upload.png', fullPage: true });
 
 });

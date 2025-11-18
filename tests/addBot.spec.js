@@ -75,13 +75,13 @@ test('Launch Application', async ({ page }) => {
 
   // Click on Checkbox
   await page.getByRole('checkbox').click();
-  await page.waitForTimeout(4000);
+  await page.waitForTimeout(2000);
 
   // Submit the Form
   await page.locator('button', { hasText: 'Create' }).click();
 
   // Take screenshot
-  await page.waitForTimeout(9000);
+  await page.waitForTimeout(3000);
   await page.screenshot({ path: 'screenshots/success_upload.png', fullPage: true });
 
 });
