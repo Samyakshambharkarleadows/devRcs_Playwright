@@ -27,32 +27,10 @@ const testsInOrder = [
 
 for (const testFile of testsInOrder) {
   console.log(`\n🚀 Running: ${testFile}...\n`);
-
-  const out = `test-results/${testFile.replace(/[\\/]/g, '_')}`;
-
   try {
-    // JSON reporter ALWAYS works, never skipped
-    execSync(
-      `npx playwright test ${testFile} --project=chromium --reporter=json --output=${out}`,
-      { stdio: 'inherit' }
-    );
-  } catch (err) {
-    console.error(`❌ Test failed → ${testFile}`);
+    execSync(`npx playwright test ${testFile} --project=chromium --reporter=line,html`, { stdio: 'inherit' });
+  } catch (error) {
+    console.error(`❌ Test failed in ${testFile}`);
+    // process.exit(1); // stop if any test fails (optional)
   }
 }
-
-console.log("\n📦 Merging all JSON reports...\n");
-
-// Combine all JSON result files to one
-execSync(
-  `npx playwright merge-reports test-results --reporter json > merged-report.json`,
-  { shell: true }
-);
-
-// Convert merged JSON to HTML
-execSync(
-  `npx playwright show-report merged-report.json --reporter html --output=playwright-report`,
-  { stdio: 'inherit' }
-);
-
-console.log("\n🎉 DONE! Final report → playwright-report/index.html\n");
