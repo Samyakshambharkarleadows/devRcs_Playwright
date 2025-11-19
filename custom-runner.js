@@ -12,6 +12,8 @@ const testsInOrder = [
   'tests/addTextTemplate.spec.js',
   'tests/addStandAloneTemplate.spec.js',
   'tests/addCarouselTemplate.spec.js',
+  'tests/addCampaign.spec.js',
+  'tests/runCampaign.spec.js',
 ];
 
 for (const testFile of testsInOrder) {
