@@ -10,6 +10,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined, // CI = 1 worker for stability, local = auto
 
+  preserveOutput: 'always', // Ensure JSON & screenshot Never deleted 
+
   /* Reporter */
   reporter: [
     ['list'], // shows clean console output
@@ -32,6 +34,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      outputDir: undefined,  // Does not overrides
       use: { ...devices['Desktop Chrome'] },
     },
   ],
