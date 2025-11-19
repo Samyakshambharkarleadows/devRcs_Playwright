@@ -1,6 +1,6 @@
-// import { execSync } from 'child_process';
 const { execSync } = require('child_process');
 
+// All tests in order
 const testsInOrder = [
   'tests/addclient.spec.js',
   'tests/updateclient.spec.js',
@@ -16,12 +16,38 @@ const testsInOrder = [
   'tests/runCampaign.spec.js',
 ];
 
+// Clean previous results
+console.log("\n🧹 Cleaning previous results...\n");
+try {
+  execSync("rm -rf test-results playwright-report", { stdio: "ignore" });
+} catch (err) {
+  // ignore for Windows
+}
+
 for (const testFile of testsInOrder) {
   console.log(`\n🚀 Running: ${testFile}...\n`);
+
+  // Each test gets its own result folder (required for merging)
+  const outputFolder = `test-results/${testFile.replace(/[\\/]/g, '_')}`;
+
   try {
-    execSync(`npx playwright test ${testFile} --project=chromium --reporter=line,html`, { stdio: 'inherit' });
+    execSync(
+      `npx playwright test ${testFile} --project=chromium --reporter=line --output=${outputFolder}`,
+      { stdio: 'inherit' }
+    );
   } catch (error) {
-    console.error(`❌ Test failed in ${testFile}`);
-    // process.exit(1); // stop if any test fails (optional)
+    console.error(`❌ Test failed → ${testFile}`);
+    console.log("➡️  Continuing with next test...\n");
+    // NOTE: we do NOT exit — remaining tests will run
   }
 }
+
+console.log("\n📦 Merging all test result folders...\n");
+
+// Generate final HTML report from ALL output folders
+execSync(`npx playwright merge-reports test-results --reporter html`, {
+  stdio: 'inherit',
+});
+
+console.log("\n🎉 ALL DONE!");
+console.log("📄 Final Report: playwright-report/index.html\n");

@@ -40,6 +40,7 @@ assets/
  ├── logo.png
  ├── pan.pdf
  └── gst.pdf
+ └── numbers.csv
 tests/
  └── firsttest.spec.js
 ```
@@ -66,3 +67,13 @@ npx playwright show-report
 
 ✅ That’s it — clone → install → run.
 No extra setup, no configuration needed.
+
+# =========================================
+Run the Custom runner, All tests together in Defined Sequence. 
+
+# Run this file
+node custom-runner.js
+
+# View reports in index.html
+playwright-report/index.html
+
