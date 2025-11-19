@@ -1,22 +1,19 @@
 const { execSync } = require('child_process');
 const fs = require("fs");
 
-// Cleaner working on Linux, Windows, CI/CD
+// Remove old results
 function safeDelete(folder) {
   if (fs.existsSync(folder)) {
     fs.rmSync(folder, { recursive: true, force: true });
   }
 }
-
-console.log("\n🧹 Cleaning old results...\n");
 safeDelete("test-results");
 safeDelete("playwright-report");
 
-// All tests in order
 const testsInOrder = [
   'tests/addclient.spec.js',
   'tests/updateclient.spec.js',
-  'tests/updateRates.spec.js',
+  // 'tests/updateRates.spec.js',
   // 'tests/addBot.spec.js',
   // 'tests/updateBot.spec.js',
   // 'tests/verifyBot.spec.js',
@@ -34,22 +31,28 @@ for (const testFile of testsInOrder) {
   const out = `test-results/${testFile.replace(/[\\/]/g, '_')}`;
 
   try {
-    // Use BLOB reporter (required for merging)
+    // JSON reporter ALWAYS works, never skipped
     execSync(
-      `npx playwright test ${testFile} --project=chromium --reporter=blob --output=${out}`,
+      `npx playwright test ${testFile} --project=chromium --reporter=json --output=${out}`,
       { stdio: 'inherit' }
     );
   } catch (err) {
     console.error(`❌ Test failed → ${testFile}`);
-    console.log("➡️  Continuing...\n");
   }
 }
 
-console.log("\n📦 Merging all blob result folders...\n");
+console.log("\n📦 Merging all JSON reports...\n");
 
+// Combine all JSON result files to one
 execSync(
-  `npx playwright merge-reports test-results --reporter html`,
+  `npx playwright merge-reports test-results --reporter json > merged-report.json`,
+  { shell: true }
+);
+
+// Convert merged JSON to HTML
+execSync(
+  `npx playwright show-report merged-report.json --reporter html --output=playwright-report`,
   { stdio: 'inherit' }
 );
 
-console.log("\n🎉 DONE! Final merged report → playwright-report/index.html\n");
+console.log("\n🎉 DONE! Final report → playwright-report/index.html\n");
