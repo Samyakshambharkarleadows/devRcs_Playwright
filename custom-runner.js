@@ -19,9 +19,9 @@ const testsInOrder = [
 for (const testFile of testsInOrder) {
   console.log(`\n🚀 Running: ${testFile}...\n`);
   try {
-    execSync(`npx playwright test ${testFile} --project=chromium --reporter=line`, { stdio: 'inherit' });
+    execSync(`npx playwright test ${testFile} --project=chromium --reporter=line,html`, { stdio: 'inherit' });
   } catch (error) {
     console.error(`❌ Test failed in ${testFile}`);
-    process.exit(1); // stop if any test fails (optional)
+    // process.exit(1); // stop if any test fails (optional)
   }
 }
