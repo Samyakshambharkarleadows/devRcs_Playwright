@@ -1,6 +1,6 @@
 const { execSync } = require('child_process');
 
-// All tests in order
+// Ordered execution
 const testsInOrder = [
   'tests/addclient.spec.js',
   'tests/updateclient.spec.js',
@@ -16,38 +16,33 @@ const testsInOrder = [
   'tests/runCampaign.spec.js',
 ];
 
-// Clean previous results
-console.log("\n🧹 Cleaning previous results...\n");
+// Cleanup old artifacts
+console.log("\n🧹 Cleaning old results...\n");
 try {
-  execSync("rm -rf test-results playwright-report", { stdio: "ignore" });
-} catch (err) {
-  // ignore for Windows
-}
+  execSync("rm -rf test-results playwright-report", { stdio: 'ignore' });
+} catch(e) {}
 
 for (const testFile of testsInOrder) {
   console.log(`\n🚀 Running: ${testFile}...\n`);
 
-  // Each test gets its own result folder (required for merging)
-  const outputFolder = `test-results/${testFile.replace(/[\\/]/g, '_')}`;
+  const out = `test-results/${testFile.replace(/[\\/]/g, '_')}`;
 
   try {
+    // IMPORTANT: use reporter=blob (required for merge)
     execSync(
-      `npx playwright test ${testFile} --project=chromium --reporter=line --output=${outputFolder}`,
+      `npx playwright test ${testFile} --project=chromium --reporter=blob --output=${out}`,
       { stdio: 'inherit' }
     );
-  } catch (error) {
-    console.error(`❌ Test failed → ${testFile}`);
-    console.log("➡️  Continuing with next test...\n");
-    // NOTE: we do NOT exit — remaining tests will run
+  } catch (err) {
+    console.error(`❌ Failed: ${testFile}, continuing...\n`);
   }
 }
 
-console.log("\n📦 Merging all test result folders...\n");
+console.log("\n📦 Merging all blob reports into ONE HTML report...\n");
 
-// Generate final HTML report from ALL output folders
-execSync(`npx playwright merge-reports test-results --reporter html`, {
-  stdio: 'inherit',
-});
+execSync(
+  `npx playwright merge-reports test-results --reporter html`,
+  { stdio: 'inherit' }
+);
 
-console.log("\n🎉 ALL DONE!");
-console.log("📄 Final Report: playwright-report/index.html\n");
+console.log("\n🎉 DONE! Final report generated at: playwright-report/index.html\n");
