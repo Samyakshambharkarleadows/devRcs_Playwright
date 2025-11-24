@@ -3,8 +3,8 @@ name: Playwright Tests
 on:
   push:
     branches:
-      - test
-
+      - main
+      
 jobs:
   test:
     runs-on: ubuntu-latest
