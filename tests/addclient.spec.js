@@ -6,12 +6,12 @@ const { postMessageToThread } = require('worker_threads')
 test('Launch Application', async({page}) => {
     test.setTimeout(0); // disables test timeout (never stops)
 
+    await page.goto('/auth/login') // Taking value of url from ENV
     // await page.goto('https://qarcs.pinlab.in/auth/login')
-    await page.goto('https://qarcs.pinlab.in/auth/login')
 
+    await page.getByRole('textbox', { name: 'Username'}).fill(process.env.RESELLER_ADMIN_USERNAME);
+    await page.getByRole('textbox', { name: 'Password'}).fill(process.env.RESELLER_ADMIN_PASSWORD);
 
-    await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")
-    await page.locator("css=#outlined-adornment-password").fill("1234567890")
     await page.getByRole('button', {name: 'Sign in'}).click();
     await page.getByText('Clients').click();
     await page.getByRole('button', { name: 'Add New Client' }).click();

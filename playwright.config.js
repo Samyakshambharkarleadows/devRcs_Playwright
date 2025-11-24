@@ -1,5 +1,9 @@
 // @ts-check
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { defineConfig, devices } from '@playwright/test';
+
 
 export default defineConfig({
   testDir: './tests',
@@ -20,6 +24,7 @@ export default defineConfig({
 
   /* Shared options for all tests */
   use: {
+    baseURL: process.env.BASE_URL,   // FOR DOMAINS
     trace: 'on-first-retry',
     headless: !!process.env.CI, // force headless on CI
     ignoreHTTPSErrors: true,

@@ -11,19 +11,26 @@ safeDelete("test-results");
 safeDelete("playwright-report");
 
 const testsInOrder = [
-  'tests/addclient.spec.js',
-  'tests/updateclient.spec.js',
-  // 'tests/updateRates.spec.js',
-  // 'tests/addBot.spec.js',
-  // 'tests/updateBot.spec.js',
-  // 'tests/verifyBot.spec.js',
-  // 'tests/changeBotStatus.spec.js',
-  // 'tests/addTextTemplate.spec.js',
-  // 'tests/addStandAloneTemplate.spec.js',
-  // 'tests/addCarouselTemplate.spec.js',
-  // 'tests/addCampaign.spec.js',
-  // 'tests/runCampaign.spec.js',
-];
+  'tests/addclient.spec.js',                    // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/updateclient.spec.js',                 // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/updateRates.spec.js',                  // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/addBot.spec.js',                       // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/updateBot.spec.js',                    // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/verifyBot.spec.js',                    // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/changeBotStatus.spec.js',              // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/addTextTemplate.spec.js',              // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/addStandAloneTemplate.spec.js',        // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/addCarouselTemplate.spec.js',          // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+  'tests/addCombinationTemplate.spec.js',       // This is from Pinnacle Reseller admin (admin@pinnacle.in)
+
+  'tests/addCampaign.spec.js',       //This is from RESELLER ADMIN LOGIN (Vrinda)
+  'tests/runCampaign.spec.js',       //This is from RESELLER ADMIN LOGIN (Vrinda)
+
+  'tests/addReseller.spec.js',             //  This is from SUPPORT SUPER ADMIN LOGIN (rbm-suport@pinnacle.in)
+  'tests/updateResellerRates.spec.js',     //  This is from SUPPORT SUPER ADMIN LOGIN (rbm-suport@pinnacle.in)
+  'tests/updateResellerRecharge.spec.js',  //  This is from SUPPORT SUPER ADMIN LOGIN (rbm-suport@pinnacle.in)
+  'tests/createSuperAdmin.spec.js',        //  This is from SUPPORT SUPER ADMIN LOGIN (rbm-suport@pinnacle.in)
+]; 
 
 for (const testFile of testsInOrder) {
   console.log(`\n🚀 Running: ${testFile}...\n`);

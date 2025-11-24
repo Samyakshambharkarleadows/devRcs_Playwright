@@ -1,87 +1,118 @@
 const { test, expect } = require('@playwright/test')
 const { time } = require('console')
-const { waitForDebugger } = require('inspector')
+const { waitForDebugger } = require('inspector');
+const { buffer } = require('stream/consumers');
 const { postMessageToThread } = require('worker_threads')
+
+// Add Resellers and Update its Status to ACTIVE
 
 test('Launch Application', async ({ page }) => {
 
   await page.goto('https://qarcs.pinlab.in/auth/login')
 
-  await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")
-  await page.locator("css=#outlined-adornment-password").fill("1234567890")
+  // await page.locator("xpath=//*[@id='mui-1']").fill("rbm-support@pinnacle.in")
+  // await page.locator("css=#outlined-adornment-password").fill("SuperAdmin@123")
+
+  await page.getByRole('textbox', { name: 'Username'}).fill(process.env.PINNACLE_SUPERADMIN_USERNAME);
+  await page.getByRole('textbox', { name: 'Password'}).fill(process.env.PINNACLE_SUPERADMIN_PASSWORD);
   await page.getByRole('button', { name: 'Sign in' }).click();
 
   // Click on RCS Management
   await page.getByRole('button', { name: 'RCS Management' }).click();
-  await page.getByRole('link', { name: 'Bots' }).click();
+  await page.getByRole('link', { name: 'Resellers' }).click();
 
   // Click on Add New Bot button to open Form.
-  await page.getByRole('button', { name: 'Add New Bot' }).click();
+  await page.getByRole('button', { name: 'Add New Reseller' }).click();
 
   // Now take a current timestamp for uniqueness.
-  const timestamp = Date.now();
+  const timestamp = Date.now().toString().split(-6);
 
-  // Now filling form of Add New BOT == IDEAL PASSING CASES 
-  const uniqueClientName = `SamyakQA_${timestamp}`;
+  // Now filling form of Add Reseller name and all
+  const uniqueName = `SamyakQA_${timestamp}`;
+  // Now filling form of Website URL 
+  const website = `https://sam${timestamp}qa.com`;
+  // Now filling form of Website URL 
+  const email = `samyak${timestamp}qa@gmail.com`;
+  // Unique Customer ID 
+  const id = `Id${timestamp}`;
 
-  // Bot Name
-  await page.locator('[name="botName"]').fill(uniqueClientName);
+  // Reseller Name
+  await page.locator('xpath=//*[@id="resellerName"]').fill(uniqueName);
 
-  // Select Brand
-  await page.locator('div[role="combobox"][id="Select Brand"]').click();
-  await page.getByPlaceholder('Search brand').fill('Pinnacle Teleservices 33 Pvt. Ltd.');
-  await page.locator('li[role="option"][data-value="Pinnacle Teleservices 33 Pvt. Ltd."]').click();
+  // Reseller Website
+  await page.locator('xpath=//*[@id="resellerWebsiteUrl"]').fill(website);
 
-  // Upload Bot Logo
-  const [fileChooserLogo] = await Promise.all([
-    page.waitForEvent('filechooser'),
-    page.getByRole('button', { name: 'Choose' }).first().click(),
+  // Reseller First Name
+  await page.getByRole('textbox', { name: 'Reseller Admin Email' }).fill(email);
+
+  // Generate Password
+  await page.getByRole('button', { name: 'Generate Password'}).click();
+
+  // Reseller Last Name
+  await page.getByRole('textbox', { name: 'Reseller Admin First Name' }).fill(uniqueName);
+
+  // Reseller Email
+  await page.getByRole('textbox', { name: 'Reseller Admin Last Name' }).fill(uniqueName);
+
+  // company person designation
+  await page.getByRole('textbox', { name: 'Company Person Designation' }).fill('Tester');
+
+  // Select Provider
+  await page.locator('div[role="combobox"][id="provider"]').click();
+  // await page.keyboard.press('Enter');             // -------------- This is working for now but Its not an good Approach.
+  await page.getByText('VI-INDIA').click();       // This is the correct Approach.
+  await page.locator('xpath=//*[@id="menu-supportedProvidersList"]').click()
+
+  await page.getByRole('combobox', { name: 'Country' }).click();
+  await page.waitForSelector('li[data-value="India"]', { state: 'visible' });
+  await page.locator('li[data-value="India"]').click();
+
+  await page.getByRole('combobox', { name: 'State' }).click();
+  await page.waitForSelector('li[data-value="Maharashtra"]', { state: 'visible' });
+  await page.locator('li[data-value="Maharashtra"]').click();
+
+  await page.getByRole('combobox', { name: 'City' }).click();
+  await page.waitForSelector('li[data-value="Nagpur"]', { state: 'visible', timeout: 60000 });
+  await page.locator('li[data-value="Nagpur"]').click();
+
+  await page.locator('[name="mobileNumber"]').fill("8956362903")
+  await page.locator('[name="companyAddress.address"]').fill("TEST RESIDENCY, NAGPUR")
+  await page.locator('[name="companyAddress.zipCode"]').fill("445566")
+
+  // Domain, for Reseller 
+  await page.locator('[name="domain"]').fill(website);
+  await page.locator('[name="apiDomain"]').fill(website);
+  await page.locator('[name="billingCustomerName"]').fill(uniqueName);
+  await page.locator('[name="billingCustomerId"]').fill(id);
+
+  // Uplaod Logo 
+  const [logoChooser] = await Promise.all([
+    page.waitForEvent('filechooser', { state: 'visible', timeout: 60000 }),
+    page.getByRole('button', { name: 'Choose' }).nth(0).click(),
   ]);
-  await fileChooserLogo.setFiles('assets/logo.png');
-
-  // Wait for crop popup and select
-  await page.waitForSelector('.ReactCrop__crop-selection[role="group"]', { timeout: 10000 });
+  await logoChooser.setFiles('assets/logo.png');
   await page.locator('.ReactCrop__crop-selection[role="group"]').click();
-  await page.waitForSelector('button:has-text("Select")', { state: 'visible', timeout: 10000 });
-  await page.locator('button:has-text("Select")').click();
+  await page.waitForTimeout(3000); // waits for 3 seconds (3000 milliseconds)
+  await page.locator('button', { hasText: 'Select' }).click();
 
-  // Wait for popup to close completely before next upload
-  await page.waitForSelector('.ReactCrop__crop-selection[role="group"]', { state: 'detached', timeout: 10000 });
-  await page.waitForTimeout(1500); // give DOM time to re-render cleanly
-
-  // Upload Banner Image 
-  const allInputs = await page.locator('input[type="file"]').all();
-  if (allInputs.length < 2) {
-    throw new Error('Second file input not found!');
-  }
-
-  // Set banner image file directly
-  await allInputs[1].setInputFiles('assets/logo.png');
-
-  // Wait for 2nd crop popup and select
-  await page.waitForSelector('.ReactCrop__crop-selection[role="group"]', { timeout: 10000 });
-  await page.locator('.ReactCrop__crop-selection[role="group"]').click();
-  await page.waitForSelector('button:has-text("Select")', { state: 'visible', timeout: 10000 });
-  await page.locator('button:has-text("Select")').click();
-
-  // Wait for 2nd popup to disappear
-  await page.waitForSelector('.ReactCrop__crop-selection[role="group"]', { state: 'detached', timeout: 10000 });
-
-  // Short message
-  await page.locator('[name="shortDescription"]').fill('Hi this is Automated test for Regression testing, Created by Samyak - QA Engineer');
-  await page.locator('[name="termsofUseUrl"]').fill('https://leadows.com');
-  await page.locator('[name="privacyPolicyUrl"]').fill('https://leadows.com');
-  await page.locator('[name="languagesSupported"]').fill('English');
-
-  // Click on Checkbox
-  await page.getByRole('checkbox').click();
-  await page.waitForTimeout(2000);
+  // Prepaid - Add Balance
+  await page.locator('[name="currentBalance"]').fill('1000');
 
   // Submit the Form
-  await page.locator('button', { hasText: 'Create' }).click();
+  await page.locator('button', { hasText: 'Add Reseller' }).click();
+  await page.waitForTimeout(3000);
+
+  // Now Click on Edit Icon --> To change the status of this reseller as Active.
+  await page.locator('[data-testid="EditIcon"]').nth(0).click();
+  await page.waitForTimeout(2000);
+
+  // Change the Status of this newly created Reseller from IN-ACTVE to ACTIVE\
+  await page.locator('[name="radio-buttons-group"]').nth(2).click();
+
+  // Click on Update the Form
+  await page.locator('button', { hasText: 'Update' }).click();
 
   // Take screenshot
   await page.waitForTimeout(3000);
   await page.screenshot({ path: 'screenshots/success_upload.png', fullPage: true });
-
 });
