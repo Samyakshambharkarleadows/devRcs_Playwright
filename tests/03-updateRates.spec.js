@@ -4,14 +4,7 @@ const { waitForDebugger } = require('inspector')
 const { postMessageToThread } = require('worker_threads')
 
 test('Launch Application', async ({ page }) => {
-    try {
-        await page.goto('https://qarcs.pinlab.in/auth/login')
-            test.setTimeout(0); // disables test timeout (never stops)
-
-    } catch (error) {
-        console.error('Test failed:', error);
-        throw error;
-    }
+    await page.goto('/auth/login')
 
     // Login into devrcs.pinnacle.in using admin Credentils.
     // await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")

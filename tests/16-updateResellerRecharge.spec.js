@@ -4,7 +4,8 @@ const { waitForDebugger } = require('inspector')
 const { postMessageToThread } = require('worker_threads')
 
 test('Launch Application', async ({ page }) => {
-    await page.goto('https://qarcs.pinlab.in/auth/login')
+    // await page.goto('https://qarcs.pinlab.in/auth/login')
+    await page.goto('/auth/login')
     // test.setTimeout(0); // disables test timeout (never stops)
 
     // Login into devrcs.pinnacle.in using Support SuperAdmin Credentils.

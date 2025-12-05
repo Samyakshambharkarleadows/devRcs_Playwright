@@ -4,7 +4,8 @@ const { waitForDebugger } = require('inspector')
 const { postMessageToThread } = require('worker_threads')
 
 test('Launch Application', async({page}) => {
-    await page.goto('https://qarcs.pinlab.in/auth/login')
+    // await page.goto('https://qarcs.pinlab.in/auth/login')
+    await page.goto('/auth/login')
 
     // await page.locator("xpath=//*[@id='mui-1']").fill("admin@pinnacle.in")     // Its Correct 
     
