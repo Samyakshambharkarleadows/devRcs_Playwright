@@ -11,8 +11,8 @@ test('Launch Application', async ({ page }) => {
     // Login into devrcs.pinnacle.in using Support SuperAdmin Credentils.
     // await page.locator("xpath=//*[@id='mui-1']").fill("rbm-support@pinnacle.in")
     // await page.locator("css=#outlined-adornment-password").fill("SuperAdmin@123")
-    await page.getByRole('textbox', { name: 'Username'}).fill(process.env.RESELLER_SUPERADMIN_USERNAME);
-    await page.getByRole('textbox', { name: 'Password'}).fill(process.env.RESELLER_SUPERADMIN_PASSWORD);
+    await page.getByRole('textbox', { name: 'Username' }).fill(process.env.RESELLER_ADMIN_USERNAME);
+    await page.getByRole('textbox', { name: 'Password' }).fill(process.env.RESELLER_SUPERADMIN_PASSWORD);
     await page.getByRole('button', { name: 'Sign in' }).click();
 
     // Click on RCS Management
@@ -21,7 +21,7 @@ test('Launch Application', async ({ page }) => {
 
     // Click on Edit icon below Providers
     await page.locator('[data-testid="EditIcon"]').nth(1).click();
-    
+
     // Click on Edit icon Again below Customized Rates
     await page.locator('[data-testid="EditIcon"]').nth(0).click();
 
