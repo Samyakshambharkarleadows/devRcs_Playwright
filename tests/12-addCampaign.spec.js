@@ -2,6 +2,13 @@ const { test, expect } = require('@playwright/test')
 const { time } = require('console')
 const { waitForDebugger } = require('inspector')
 const { postMessageToThread } = require('worker_threads')
+const { default: testState } = require('../testState/state');
+
+// Now take a current timestamp for uniqueness.
+const timestamp = Date.now().toString().split(-6);
+testState["campaignName"] = `Samyak_${timestamp}_QA`
+
+
 
 test('Launch Application', async ({ page }) => {
 
@@ -11,8 +18,8 @@ test('Launch Application', async ({ page }) => {
   // await page.locator("xpath=//*[@id='mui-1']").fill("vinoda.khatri@pinnacle.in")
   // await page.locator("css=#outlined-adornment-password").fill("PinnacleRCS@2024")
 
-    await page.getByRole('textbox', { name: 'Username'}).fill(process.env.ORG_ADMIN_USERNAME);
-    await page.getByRole('textbox', { name: 'Password'}).fill(process.env.ORG_ADMIN_PASSWORD);
+  await page.getByRole('textbox', { name: 'Username' }).fill(process.env.ORG_ADMIN_USERNAME);
+  await page.getByRole('textbox', { name: 'Password' }).fill(process.env.ORG_ADMIN_PASSWORD);
 
   await page.getByRole('button', { name: 'Sign in' }).click();
 
@@ -23,11 +30,9 @@ test('Launch Application', async ({ page }) => {
   // Click on Add New Bot button to open Form.
   await page.getByRole('button', { name: 'Add New Campaign' }).click();
 
-  // Now take a current timestamp for uniqueness.
-  const timestamp = Date.now().toString().split(-6);
-  
+
   // Now filling form of Add New BOT == IDEAL PASSING CASES 
-  const campaignName = `Samyak_${timestamp}_QA`;
+  const campaignName = testState.campaignName;
 
   // Enter Campaign Name
   await page.locator('[name="campaignName"]').fill(campaignName);
