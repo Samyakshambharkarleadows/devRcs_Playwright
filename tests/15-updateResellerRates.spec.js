@@ -12,7 +12,7 @@ test('Launch Application', async ({ page }) => {
     // await page.locator("xpath=//*[@id='mui-1']").fill("rbm-support@pinnacle.in")
     // await page.locator("css=#outlined-adornment-password").fill("SuperAdmin@123")
     await page.getByRole('textbox', { name: 'Username' }).fill(process.env.RESELLER_ADMIN_USERNAME);
-    await page.getByRole('textbox', { name: 'Password' }).fill(process.env.RESELLER_SUPERADMIN_PASSWORD);
+    await page.getByRole('textbox', { name: 'Password' }).fill(process.env.RESELLER_ADMIN_PASSWORD);
     await page.getByRole('button', { name: 'Sign in' }).click();
 
     // Click on RCS Management
